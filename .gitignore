@@ -1,0 +1,22 @@
+# secrets / local config
+.env
+
+# runtime state
+data/inbox/
+data/inbox/processed/
+data/outbox/
+data/out/
+data/*.sqlite3*
+logs/
+*.log
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/

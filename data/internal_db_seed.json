@@ -1,0 +1,84 @@
+{
+  "_comment": "SIMULATED internal third-party master data. All entities are fictional. Replace InternalDatabaseClient with a real adapter for production use.",
+  "version": 1,
+  "records": [
+    {
+      "code": "TP-0001",
+      "legal_name": "Aurora Logistics Ltd",
+      "entity_type": "Private Limited Company",
+      "country": "GB",
+      "risk_rating": "low",
+      "status": "active",
+      "onboarded_at": "2019-04-02",
+      "business_unit": "Supply Chain",
+      "sanctions_hits": 0,
+      "pep_flags": 0,
+      "notes": "Long-standing vendor, annual review completed."
+    },
+    {
+      "code": "TP-0002",
+      "legal_name": "Meridian Trading GmbH",
+      "entity_type": "GmbH",
+      "country": "DE",
+      "risk_rating": "medium",
+      "status": "active",
+      "onboarded_at": "2023-11-15",
+      "business_unit": "Procurement",
+      "sanctions_hits": 0,
+      "pep_flags": 0,
+      "notes": "Enhanced due diligence performed at onboarding."
+    },
+    {
+      "code": "TP-0003",
+      "legal_name": "Northwind Systems B.V.",
+      "entity_type": "B.V.",
+      "country": "NL",
+      "risk_rating": "high",
+      "status": "active",
+      "onboarded_at": "2021-06-30",
+      "business_unit": "Technology",
+      "sanctions_hits": 0,
+      "pep_flags": 1,
+      "notes": "One beneficial owner is a politically exposed person."
+    },
+    {
+      "code": "TP-0004",
+      "legal_name": "Lumen Partners S.L.",
+      "entity_type": "S.L.",
+      "country": "ES",
+      "risk_rating": "low",
+      "status": "active",
+      "onboarded_at": "2017-02-08",
+      "business_unit": "Marketing",
+      "sanctions_hits": 0,
+      "pep_flags": 0,
+      "notes": null
+    },
+    {
+      "code": "TP-0005",
+      "legal_name": "Kestrel Industries S.p.A.",
+      "entity_type": "S.p.A.",
+      "country": "IT",
+      "risk_rating": "medium",
+      "status": "under_review",
+      "onboarded_at": "2020-09-21",
+      "business_unit": "Manufacturing",
+      "sanctions_hits": 1,
+      "pep_flags": 0,
+      "notes": "Historical name-screening hit, cleared - monitor quarterly."
+    },
+    {
+      "code": "TP-0006",
+      "legal_name": "Blue Harbor Services SAS",
+      "entity_type": "SAS",
+      "country": "FR",
+      "risk_rating": "low",
+      "status": "active",
+      "onboarded_at": "2022-01-10",
+      "business_unit": "Facilities",
+      "sanctions_hits": 0,
+      "pep_flags": 0,
+      "notes": null
+    }
+  ]
+}

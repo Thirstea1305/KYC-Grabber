@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KYC Grabber - operations dashboard</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">KYC</span>
+      <div>
+        <h1>KYC Grabber</h1>
+        <p class="muted">Email-driven third-party screening &middot; CSV in, Excel out</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div id="servicePill" class="pill pill-unknown">connecting…</div>
+      <div class="muted small" id="uptime">uptime –</div>
+    </div>
+  </header>
+
+  <section class="cards" id="statCards">
+    <div class="card">
+      <span class="card-label">Mail watcher</span>
+      <span class="card-value" id="statWatcher">–</span>
+      <span class="card-sub" id="statWatcherSub">–</span>
+    </div>
+    <div class="card">
+      <span class="card-label">Emails seen</span>
+      <span class="card-value" id="statMails">–</span>
+      <span class="card-sub" id="statPolled">last poll –</span>
+    </div>
+    <div class="card">
+      <span class="card-label">Jobs queued</span>
+      <span class="card-value" id="statQueued">–</span>
+      <span class="card-sub" id="statWorkers">workers –</span>
+    </div>
+    <div class="card">
+      <span class="card-label">Completed / failed</span>
+      <span class="card-value" id="statDone">–</span>
+      <span class="card-sub" id="statRejected">rejected –</span>
+    </div>
+    <div class="card">
+      <span class="card-label">Internal DB rows</span>
+      <span class="card-value" id="statInternal">–</span>
+      <span class="card-sub" id="statExternal">external calls –</span>
+    </div>
+    <div class="card">
+      <span class="card-label">External cache</span>
+      <span class="card-value" id="statCache">–</span>
+      <button class="link-btn" id="clearCacheBtn" type="button">clear cache</button>
+    </div>
+  </section>
+
+  <main class="layout">
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Simulate an inbound email</h2>
+        <button class="link-btn" id="sampleBtn" type="button">load sample codes</button>
+      </div>
+      <p class="muted small">
+        The email is written into the watcher inbox exactly as if it had arrived over IMAP.
+        Subject must contain the configured token (see <code>/api/status</code>).
+      </p>
+      <form id="simForm" class="form-grid">
+        <label>From
+          <input type="email" id="simSender" value="analyst@example.com" required />
+        </label>
+        <label>Subject
+          <input type="text" id="simSubject" value="[KYC] quarterly third-party screening" required />
+        </label>
+        <label>Attachment name
+          <input type="text" id="simFilename" value="third_parties.csv" required />
+        </label>
+        <label class="full">CSV payload (needs a <code>third_party_code</code> column)
+          <textarea id="simCsv" rows="9" spellcheck="false"></textarea>
+        </label>
+        <label class="full">Or upload a CSV file
+          <input type="file" id="simFile" accept=".csv,text/csv" />
+        </label>
+        <div class="full row">
+          <button type="submit" class="primary" id="sendBtn">Send email</button>
+          <span class="muted small" id="simResult"></span>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Live log</h2>
+        <button class="link-btn" id="clearLogBtn" type="button">clear view</button>
+      </div>
+      <div id="log" class="log" aria-live="polite"></div>
+    </section>
+
+    <section class="panel wide">
+      <div class="panel-head">
+        <h2>Jobs</h2>
+        <span class="muted small" id="jobCount"></span>
+      </div>
+      <div class="table-wrap">
+        <table id="jobsTable">
+          <thead>
+            <tr>
+              <th>Job</th><th>Status</th><th>From</th><th>Subject</th>
+              <th>Codes</th><th>Progress</th><th>Created (UTC)</th><th></th>
+            </tr>
+          </thead>
+          <tbody><tr><td colspan="8" class="muted">No jobs yet.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel wide" id="detailPanel" hidden>
+      <div class="panel-head">
+        <h2 id="detailTitle">Job detail</h2>
+        <div class="row">
+          <a class="button" id="downloadBtn" href="#" hidden>Download workbook</a>
+          <button class="link-btn" id="rerunBtn" type="button">re-run</button>
+          <button class="link-btn" id="closeDetailBtn" type="button">close</button>
+        </div>
+      </div>
+      <dl class="kv" id="detailMeta"></dl>
+      <div class="table-wrap">
+        <table id="itemsTable">
+          <thead>
+            <tr>
+              <th>Third-party code</th><th>Match</th><th>Risk</th>
+              <th>Internal name</th><th>External name</th><th>Differences / notes</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="muted small">
+    Simulated internal database and external registry return synthetic demo data only.
+    Replace them with real adapters before production use.
+  </footer>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+services:
+  kyc-grabber:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    image: kyc-grabber:0.1.0
+    container_name: kyc-grabber
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    env_file:
+      - ../.env
+    environment:
+      KYC_WEB__HOST: "0.0.0.0"
+      KYC_MAIL__MODE: "filesystem"
+      KYC_MAIL__INBOX_DIR: "/app/data/inbox"
+      KYC_MAIL__PROCESSED_DIR: "/app/data/inbox/processed"
+      KYC_OUTBOUND__MODE: "filesystem"
+      KYC_OUTBOUND__OUTBOX_DIR: "/app/data/outbox"
+      KYC_EXCEL__OUTPUT_DIR: "/app/data/out"
+    volumes:
+      - kyc-data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8080/api/health').status==200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  kyc-data:

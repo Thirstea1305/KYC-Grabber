@@ -1,0 +1,30 @@
+[Unit]
+Description=KYC Grabber - email-driven third-party KYC enrichment service
+Documentation=file:///opt/kyc-grabber/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=kyc
+Group=kyc
+WorkingDirectory=/opt/kyc-grabber
+EnvironmentFile=/opt/kyc-grabber/.env
+ExecStart=/opt/kyc-grabber/.venv/bin/python -m kyc_grabber run
+Restart=always
+RestartSec=10
+TimeoutStopSec=30
+KillSignal=SIGTERM
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=kyc-grabber
+
+# hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=read-only
+ReadWritePaths=/opt/kyc-grabber/data /opt/kyc-grabber/logs
+
+[Install]
+WantedBy=multi-user.target

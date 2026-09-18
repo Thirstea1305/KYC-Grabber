@@ -1,0 +1,18 @@
+# Normalise line endings so the repo behaves the same on Windows and Linux.
+* text=auto
+
+*.py   text
+*.md   text
+*.json text
+*.toml text
+*.yml  text
+*.yaml text
+*.css  text
+*.js   text
+*.html text
+
+*.eml  text eol=crlf
+*.xlsx binary
+*.sqlite3 binary
+*.png  binary
+*.jpg  binary
