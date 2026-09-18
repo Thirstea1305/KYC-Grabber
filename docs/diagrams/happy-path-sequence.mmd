@@ -1,0 +1,30 @@
+sequenceDiagram
+    autonumber
+    participant U as Analyst
+    participant M as Mailbox
+    participant S as Mail source
+    participant P as Pipeline
+    participant D as Internal DB
+    participant X as External registry
+    participant E as Excel writer
+    participant O as Outbound mailer
+
+    U->>M: email "[KYC] …" + third_parties.csv
+    M-->>S: IDLE notification / poll hit
+    S->>S: parse RFC822 -> RawMail
+    S->>P: ingest(RawMail)
+    P->>P: dedupe by Message-ID
+    P->>P: filter (sender, subject token, .csv, size)
+    P->>P: parse codes, dedupe rows, validate
+    P->>P: create job + items (SQLite), publish event
+    P->>D: lookup(code) per item
+    D-->>P: internal record or miss
+    P->>X: fetch(code, hints) per item
+    X-->>P: external record / not-found / error
+    P->>P: compare() -> match status + differences
+    P->>P: derive_risk() -> low..critical
+    P->>E: write one sheet per third party
+    E-->>P: report.xlsx
+    P->>O: reply with attachment
+    O-->>U: "KYC report for third_parties.csv (6 third parties)"
+    P->>P: mark job completed, publish events

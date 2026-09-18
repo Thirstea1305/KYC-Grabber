@@ -1,0 +1,49 @@
+erDiagram
+    JOBS ||--o{ JOB_ITEMS : "has"
+    JOBS ||--o{ EVENTS : "logs"
+    MAIL_SEEN ||--o| JOBS : "dedupe"
+
+    JOBS {
+        text id PK "J-YYYYMMDD-HHMMSS-XXXX"
+        text status "received|queued|enriching|rendering|delivering|completed|failed|rejected"
+        text sender
+        text subject
+        text message_id
+        text filename
+        int total_codes
+        int processed_codes
+        int failed_codes
+        int warnings
+        text workbook_path
+        text delivered_to
+        text delivery_mode
+        text reject_reason
+        text created_at
+        text updated_at
+    }
+    JOB_ITEMS {
+        text job_id PK,FK
+        text code PK
+        text status
+        text match_status
+        text risk_rating
+        text internal_json
+        text external_json
+        text differences
+        text warnings
+        text error
+        int duration_ms
+    }
+    EVENTS {
+        int id PK
+        text job_id FK
+        text at
+        text level
+        text message
+        text payload
+    }
+    MAIL_SEEN {
+        text message_id PK
+        text job_id
+        text seen_at
+    }

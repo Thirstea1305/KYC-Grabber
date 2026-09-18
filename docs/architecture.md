@@ -3,6 +3,10 @@
 > Status: framework/stub. The internal database and the external registry are **simulated**;
 > every payload they return is marked as synthetic demo data.
 
+Every diagram on this page is also exported as a standalone file in [`diagrams/`](diagrams/) — see
+[`diagrams/README.md`](diagrams/README.md) for the index, and for rendering them to SVG/PNG with
+`python scripts/export_diagrams.py --render`.
+
 ## 1. What the service does
 
 ```mermaid

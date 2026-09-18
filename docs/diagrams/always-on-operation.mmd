@@ -1,0 +1,9 @@
+flowchart LR
+    subgraph proc["One process, one event loop"]
+        SUP["Supervisor<br/><code>supervisor.py</code>"]
+        SUP -->|task| MAILT["Mail source loop<br/>(thread for IMAP)"]
+        SUP -->|task| WT["Worker pool"]
+        SUP -->|task| WEBT["uvicorn server"]
+        SUP -->|task| HK["Housekeeping<br/>prune events · heartbeat"]
+    end
+    SUP -->|SIGINT / SIGTERM| GRACE["Graceful shutdown:<br/>stop source, cancel tasks, close store"]

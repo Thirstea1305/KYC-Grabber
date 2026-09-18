@@ -177,10 +177,10 @@ kyc_grabber/
   watch/             base.py, filesystem_source.py, imap_source.py, filter.py
   web/               app.py (FastAPI), static/ (dashboard)
 run.py               convenience launcher (any working directory)
-scripts/             send_email.py - drop a test request into the mailbox
+scripts/             send_email.py (test request), export_diagrams.py (diagram export)
 data/                internal seed, inbox, outbox, out/, sqlite store
 deploy/              systemd unit, docker files, always-on instructions
-docs/                architecture.md (diagrams)
+docs/                architecture.md + diagrams/ (exported .mmd sources, SVG/PNG on demand)
 tests/               57 tests, no external services required
 ```
 

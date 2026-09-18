@@ -10,6 +10,9 @@ data/*.sqlite3*
 logs/
 *.log
 
+# generated diagram renders (recreate with: python scripts/export_diagrams.py --render)
+docs/diagrams/rendered/
+
 # python
 __pycache__/
 *.py[cod]

@@ -1,0 +1,13 @@
+stateDiagram-v2
+    [*] --> received
+    received --> rejected: filter/parse failure (reply with reason)
+    received --> queued: codes accepted
+    queued --> enriching: worker picks it up
+    enriching --> rendering: all codes enriched
+    enriching --> failed: unrecoverable error
+    rendering --> delivering
+    delivering --> completed
+    failed --> [*]
+    completed --> [*]
+    rejected --> [*]
+    completed --> queued: operator re-run

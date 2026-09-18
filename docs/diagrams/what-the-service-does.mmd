@@ -1,0 +1,8 @@
+flowchart LR
+    A["Analyst sends an email<br/>with a CSV of third-party codes"] --> B["KYC Grabber<br/>(always running)"]
+    B --> C["Internal database<br/>lookup"]
+    B --> D["External registry /<br/>screening lookup"]
+    C --> E["Reconcile &amp; score risk"]
+    D --> E
+    E --> F["Excel workbook<br/>1 sheet per third party"]
+    F --> G["Reply email<br/>with the workbook attached"]

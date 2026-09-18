@@ -1,0 +1,46 @@
+flowchart TB
+    subgraph mail["Mail boundary"]
+        IMAAP["IMAP mailbox<br/>(production)"]
+        INBOX[("data/inbox<br/>*.eml drop-ins<br/>(dev / demo)")]
+    end
+
+    subgraph svc["KYC Grabber process (single asyncio event loop)"]
+        direction TB
+        SRC["Mail source<br/><code>watch/</code><br/>IMAP IDLE + poll fallback<br/>or filesystem watcher"]
+        FILT["MailFilter<br/><code>watch/filter.py</code><br/>sender allow-list, subject token,<br/>attachment policy"]
+        PARSE["CSV parser<br/><code>csv_parser.py</code>"]
+        PIPE["Pipeline<br/><code>pipeline.py</code>"]
+        Q["Job queue"]
+        W1["Worker 1"]
+        W2["Worker N"]
+        INT["Internal client<br/><code>clients/internal_db.py</code>"]
+        EXT["External client<br/><code>clients/external_db.py</code><br/>retry + backoff + cache"]
+        XL["Excel writer<br/><code>excel_report.py</code>"]
+        OUT["Outbound mailer<br/><code>mail/sender.py</code><br/>SMTP or outbox"]
+        BUS["Event bus<br/><code>bus.py</code>"]
+        API["FastAPI<br/><code>web/app.py</code><br/>REST + SSE"]
+    end
+
+    subgraph store["Storage"]
+        DB[("SQLite<br/>jobs · job_items · events · mail_seen")]
+        FILES[("data/out/*.xlsx<br/>data/outbox/*.eml")]
+    end
+
+    subgraph ui["Operators"]
+        DASH["Dashboard<br/><code>web/static/</code>"]
+    end
+
+    IMAAP --> SRC
+    INBOX --> SRC
+    SRC --> FILT --> PARSE --> PIPE
+    PIPE --> Q --> W1 & W2
+    W1 & W2 --> INT
+    W1 & W2 --> EXT
+    W1 & W2 --> XL --> FILES
+    W1 & W2 --> OUT
+    PIPE --> DB
+    W1 & W2 --> DB
+    PIPE & W1 & W2 --> BUS --> API
+    API <--> DB
+    API --> FILES
+    DASH <-->|REST + SSE| API
