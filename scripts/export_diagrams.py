@@ -128,6 +128,12 @@ def index_markdown(diagrams: list[Diagram]) -> str:
         f"| [`{diagram.filename}`]({diagram.filename}) | {diagram.section} | {diagram.kind} |"
         for diagram in diagrams
     )
+    gallery = "\n\n".join(
+        f"### {diagram.section}\n\n"
+        f"<sub>`{diagram.filename}` · {diagram.kind}</sub>\n\n"
+        f"```mermaid\n{diagram.body}\n```"
+        for diagram in diagrams
+    )
     return f"""# Diagrams
 
 Standalone copies of the mermaid diagrams in [`../architecture.md`](../architecture.md).
@@ -135,23 +141,29 @@ Standalone copies of the mermaid diagrams in [`../architecture.md`](../architect
 **Generated file — do not edit by hand.** Change the markdown, then regenerate:
 
 ```powershell
-python scripts/export_diagrams.py            # refresh the .mmd files
+python scripts/export_diagrams.py            # refresh the .mmd files and this page
 python scripts/export_diagrams.py --render   # also produce SVG + PNG in rendered/
 ```
+
+## How to view them
+
+* **Right here** — press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>V</kbd> in VS Code (or
+  <kbd>Ctrl</kbd>+<kbd>K</kbd> <kbd>V</kbd> for a side-by-side preview): every diagram below
+  renders live, no extension required. GitHub renders this page the same way.
+* **As images** — `python scripts/export_diagrams.py --render` writes SVG and PNG copies to
+  `rendered/` (git-ignored); open those in any image viewer.
+* **Editing** — paste any `.mmd` file into [mermaid.live](https://mermaid.live) for a live
+  editor with export options.
+
+## Index
 
 | File | Section in architecture.md | Type |
 | --- | --- | --- |
 {rows}
 
-## Using these files
+## Rendered diagrams
 
-* GitHub, VS Code's Markdown preview and mermaid.live all render the fenced blocks in
-  `architecture.md` directly — the `.mmd` files exist so a single diagram can be reused
-  elsewhere (Confluence, a slide deck, a `.drawio`/`.vsdx` import, documentation tooling).
-* `python scripts/export_diagrams.py --render` writes `rendered/<name>.svg` and
-  `rendered/<name>.png` using [`@mermaid-js/mermaid-cli`](https://github.com/mermaid-js/mermaid-cli)
-  via `npx` (Node.js required, nothing is installed into this repository).
-  `rendered/` is git-ignored — the `.mmd` sources are the canonical artefacts.
+{gallery}
 """
 
 
