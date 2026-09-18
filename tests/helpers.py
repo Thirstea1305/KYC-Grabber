@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 import json
 from pathlib import Path
-from typing import Awaitable, Callable
+from typing import Callable
 
 from kyc_grabber.config import (
     ExcelSettings,
@@ -83,7 +83,3 @@ async def wait_for(predicate: Callable[[], object], timeout: float = 15.0, inter
             return result
         await asyncio.sleep(interval)
     raise AssertionError("condition not met before timeout")
-
-
-def run(coro: Awaitable[object]) -> object:
-    return asyncio.run(coro)  # type: ignore[arg-type]
